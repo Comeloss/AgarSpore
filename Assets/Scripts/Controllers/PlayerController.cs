@@ -66,6 +66,8 @@ namespace Controllers
             {
                 MoveUpY(false);
             }
+            
+            ConnectionManager.Instance.SendUpdate(transform.position.x, transform.position.y, body.rotation.eulerAngles.z);
 
             if (Input.GetMouseButton(0))
             {
@@ -97,6 +99,8 @@ namespace Controllers
             var newPosX = transform.position.x + (left ? -speed : speed); 
             
             transform.SetX(newPosX);
+            
+            
         }
         
         void MoveUpY(bool up)
