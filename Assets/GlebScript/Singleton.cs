@@ -51,13 +51,13 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     }
 
 
-    private void OnApplicationQuit()
+    protected virtual void OnApplicationQuit()
     {
         m_ShuttingDown = true;
     }
 
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         m_ShuttingDown = true;
     }

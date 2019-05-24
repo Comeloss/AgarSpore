@@ -61,4 +61,13 @@ public class PlayerResponseData
         get { return h; }
         set { h = value; }
     }
+
+    [SerializeField]
+    public bool s;
+
+    public bool S
+    {
+        get { return s; }
+        set { s = value; }
+    }
 }

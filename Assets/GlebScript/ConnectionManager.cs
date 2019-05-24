@@ -24,17 +24,18 @@ namespace Assets.GlebScript
             Connect();
         }
 
-        void OnDestroy()
+        protected override void OnDestroy()
         {
             Disconnect();
+
+            base.OnDestroy();
         }
 
-        void Update()
+        protected override void OnApplicationQuit()
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                SendUpdate(1, 1, 1);
-            }
+            Disconnect();
+
+            base.OnApplicationQuit();
         }
 
         #region WebSocket Events
@@ -158,7 +159,7 @@ namespace Assets.GlebScript
             _webSocket.Close();
         }
 
-        public void SendUpdate(float x, float y, float r)
+        public void SendUpdate(float x, float y, float r, bool s)
         {
             var data = new ServerMethodRequestMessage()
             {
@@ -170,6 +171,7 @@ namespace Assets.GlebScript
                         x = x,
                         y = y,
                         r = r,
+                        s = s,
                         id = UserId
                     }
                 }

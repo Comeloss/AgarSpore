@@ -39,4 +39,13 @@ public class UpdateRequestData
         get { return id; }
         set { id = value; }
     }
+
+    [SerializeField]
+    public bool s;
+
+    public bool S
+    {
+        get { return s; }
+        set { s = value; }
+    }
 }
