@@ -6,18 +6,26 @@ namespace Assets.GlebScript
 {
     public class ConnectionManager : Singleton<ConnectionManager>
     {
-        // Start is called before the first frame update
+        private WebSocket _webSocket;
+        public string UserId;
+
         void Start()
         {
-            var webSocket = new WebSocket(new Uri("ws://192.168.88.178:5000/messages"));
-            webSocket.Open();
+            _webSocket = new WebSocket(new Uri("ws://192.168.88.178:5000/messages"));
 
-            webSocket.OnOpen += OnWebSocketOpen;
-            webSocket.OnMessage += OnMessageReceived;
-            webSocket.OnBinary += OnBinaryMessageReceived;
-            webSocket.OnClosed += OnWebSocketClosed;
-            webSocket.OnError += OnError;
-            webSocket.OnErrorDesc += OnErrorDesc;
+            _webSocket.OnOpen += OnWebSocketOpen;
+            _webSocket.OnMessage += OnMessageReceived;
+            _webSocket.OnBinary += OnBinaryMessageReceived;
+            _webSocket.OnClosed += OnWebSocketClosed;
+            _webSocket.OnError += OnError;
+            _webSocket.OnErrorDesc += OnErrorDesc;
+
+            Connect();
+        }
+
+        void OnDestroy()
+        {
+            Disconnect();
         }
 
         private void OnWebSocketOpen(WebSocket webSocket)
@@ -33,6 +41,48 @@ namespace Assets.GlebScript
         private void OnMessageReceived(WebSocket webSocket, string message)
         {
             Debug.Log("Text Message received from server: " + message);
+
+            var serverResponse = JsonUtility.FromJson<ServerResponseMessage>(message);
+
+            HandleServerResponse(serverResponse);
+        }
+
+        private void HandleServerResponse(ServerResponseMessage serverResponse)
+        {
+            if (serverResponse == null)
+            {
+                Debug.Log("Error: null server response");
+                return;
+            }
+
+            if (serverResponse.MessageType == 2)
+            {
+                UserId = serverResponse.Data;
+            }
+            else if (serverResponse.MessageType == 1)
+            {
+                var serverResponseArguments = JsonUtility.FromJson<ServerArgumentsResponse>(serverResponse.Data);
+
+                if (serverResponseArguments == null)
+                {
+                    Debug.Log("Error: null server response arguments");
+                    return;
+                }
+
+                switch (serverResponseArguments.MethodName)
+                {
+                    case "Update":
+                        OnServerUpdateMethod(serverResponseArguments.Arguments[0]);
+                        break;
+                }
+            }
+        }
+
+        private void OnServerUpdateMethod(UpdateResponseData data)
+        {
+            //var updateData = JsonUtility.FromJson<UpdateResponseData>(data);
+
+            Debug.Log("OnServerUpdateMethod: " + data.Players[0].PlayerId);
         }
 
         private void OnBinaryMessageReceived(WebSocket webSocket, byte[] message)
@@ -49,6 +99,8 @@ namespace Assets.GlebScript
                     ws.InternalRequest.Response.Message);
 
             Debug.Log("An error occured: " + (ex != null ? ex.Message : "Unknown: " + errorMsg));
+
+            Disconnect();
         }
 
         private void OnErrorDesc(WebSocket ws, string error)
@@ -56,9 +108,54 @@ namespace Assets.GlebScript
             Debug.Log("Error: " + error);
         }
 
-        public void MoveRotate(float x, float y, float rotation)
+        public void Connect()
         {
-
+            if (!_webSocket.IsOpen)
+            {
+                _webSocket.Open();
+            }
+            else
+            {
+                Debug.Log("Error: web socket already open");
+            }
         }
+
+        public void Disconnect()
+        {
+            //if (!_webSocket.IsOpen) return;
+
+            _webSocket.Close();
+        }
+
+        public void SendUpdate(float x, float y, float r)
+        {
+            var requestData = new ServerRequestMessage()
+            {
+                methodName = "Update",
+                arguments = new []
+                {
+                    new UpdateRequestData()
+                    {
+                        x = x,
+                        y = y,
+                        r = r
+                    }
+
+                }
+            };
+
+            string message = JsonUtility.ToJson(requestData);
+
+            _webSocket.Send(message);
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                SendUpdate(1, 1, 1);
+            }
+        }
+
     }
 }

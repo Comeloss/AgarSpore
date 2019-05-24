@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class MoveRotateRequestData
+public class UpdateRequestData
 {
     [SerializeField]
     public float x;
@@ -23,11 +23,11 @@ public class MoveRotateRequestData
     }
 
     [SerializeField]
-    public float rotation;
+    public float r;
 
-    public float Rotation
+    public float R
     {
-        get { return rotation; }
-        set { rotation = value; }
+        get { return r; }
+        set { r = value; }
     }
 }

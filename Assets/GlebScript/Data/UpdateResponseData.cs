@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class PlayersResponseData
+public class UpdateResponseData
 {
     [SerializeField]
     public PlayerResponseData[] players;
@@ -45,20 +45,20 @@ public class PlayerResponseData
     }
 
     [SerializeField]
-    public float rotation;
+    public float r;
 
-    public float Rotation
+    public float R
     {
-        get { return rotation; }
-        set { rotation = value; }
+        get { return r; }
+        set { r = value; }
     }
 
     [SerializeField]
-    public int hp;
+    public int h;
 
-    public int Hp
+    public int H
     {
-        get { return hp; }
-        set { hp = value; }
+        get { return h; }
+        set { h = value; }
     }
 }
