@@ -28,6 +28,16 @@ namespace Assets.GlebScript
             Disconnect();
         }
 
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                SendUpdate(1, 1, 1);
+            }
+        }
+
+        #region WebSocket Events
+
         private void OnWebSocketOpen(WebSocket webSocket)
         {
             Debug.Log("WebSocket Open!");
@@ -46,6 +56,33 @@ namespace Assets.GlebScript
 
             HandleServerResponse(serverResponse);
         }
+
+        private void OnBinaryMessageReceived(WebSocket webSocket, byte[] message)
+        {
+            Debug.Log("Binary Message received from server. Length: " + message.Length);
+        }
+
+        private void OnError(WebSocket ws, Exception ex)
+        {
+            string errorMsg = string.Empty;
+            if (ws.InternalRequest.Response != null)
+                errorMsg = string.Format("Status Code from Server: {0} and Message: {1}",
+                    ws.InternalRequest.Response.StatusCode,
+                    ws.InternalRequest.Response.Message);
+
+            Debug.Log("An error occured: " + (ex != null ? ex.Message : "Unknown: " + errorMsg));
+
+            Disconnect();
+        }
+
+        private void OnErrorDesc(WebSocket ws, string error)
+        {
+            Debug.Log("Error: " + error);
+        }
+
+        #endregion
+
+        #region Response
 
         private void HandleServerResponse(ServerResponseMessage serverResponse)
         {
@@ -85,28 +122,9 @@ namespace Assets.GlebScript
             Debug.Log("OnServerUpdateMethod: " + data.Players[0].PlayerId);
         }
 
-        private void OnBinaryMessageReceived(WebSocket webSocket, byte[] message)
-        {
-            Debug.Log("Binary Message received from server. Length: " + message.Length);
-        }
+        #endregion
 
-        private void OnError(WebSocket ws, Exception ex)
-        {
-            string errorMsg = string.Empty;
-            if (ws.InternalRequest.Response != null)
-                errorMsg = string.Format("Status Code from Server: {0} and Message: {1}",
-                    ws.InternalRequest.Response.StatusCode,
-                    ws.InternalRequest.Response.Message);
-
-            Debug.Log("An error occured: " + (ex != null ? ex.Message : "Unknown: " + errorMsg));
-
-            Disconnect();
-        }
-
-        private void OnErrorDesc(WebSocket ws, string error)
-        {
-            Debug.Log("Error: " + error);
-        }
+        #region Request
 
         public void Connect()
         {
@@ -129,10 +147,10 @@ namespace Assets.GlebScript
 
         public void SendUpdate(float x, float y, float r)
         {
-            var requestData = new ServerRequestMessage()
+            var data = new ServerMethodRequestMessage()
             {
                 methodName = "Update",
-                arguments = new []
+                arguments = new[]
                 {
                     new UpdateRequestData()
                     {
@@ -144,18 +162,19 @@ namespace Assets.GlebScript
                 }
             };
 
-            string message = JsonUtility.ToJson(requestData);
+            var requestData = new ServerRequestMessage()
+            {
+                messageType = 0,
+                data = JsonUtility.ToJson(data)
+            };
+
+            string message = JsonUtility.ToJson(data);//JsonUtility.ToJson(requestData);
+
+            Debug.Log("SendUpdate message: " + message);
 
             _webSocket.Send(message);
         }
 
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                SendUpdate(1, 1, 1);
-            }
-        }
-
+        #endregion
     }
 }
