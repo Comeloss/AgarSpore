@@ -1,8 +1,9 @@
-﻿using Generators;
+﻿using Assets.GlebScript;
+using Generators;
 using Managers;
 using UnityEngine;
 
-public class Game : Singleton<Game>
+public class Game : MonoBehaviour
 {
     public PlayersSpawner PlayersSpawner;
     
@@ -18,6 +19,8 @@ public class Game : Singleton<Game>
         PlayersManager = new PlayersManager();
 
         PlayersSpawner.Init(PlayersManager);
+        
+        ConnectionManager.Instance.InitGameController(this);
     }
 }
 

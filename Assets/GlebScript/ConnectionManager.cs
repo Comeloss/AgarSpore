@@ -116,9 +116,22 @@ namespace Assets.GlebScript
             }
         }
 
+        private Game _gameController;
+
+        public void InitGameController(Game gameController)
+        {
+            _gameController = gameController;
+        }
+        
         private void OnServerUpdateMethod(UpdateResponseData data)
         {
-            Game.Instance.PlayersManager.UpdateGame(data);
+            if (_gameController == null)
+            {
+                Debug.Log("Error _gameController null:");
+                return;
+            }
+            
+            _gameController.PlayersManager.UpdateGame(data);
             Debug.Log("OnServerUpdateMethod: " + data.Players[0].PlayerId);
         }
 

@@ -1,10 +1,11 @@
 ﻿using System.Collections;
+using Assets.GlebScript;
 using Models;
 using UnityEngine;
 
 namespace Controllers
 {
-    public class PlayerController : Game
+    public class PlayerController : Singleton<PlayerController>
     {
         [SerializeField] float speed = 1f;
 
@@ -18,7 +19,11 @@ namespace Controllers
 
         public void Init(MdlPlayer mdlPlayer)
         {
+            currentPlayer = mdlPlayer;
+            
             text.text = mdlPlayer.Id;
+            
+            
             
             mdlPlayer.PlayerUpdated += MdlPlayerOnPlayerUpdated;
         }
@@ -31,7 +36,13 @@ namespace Controllers
 
         void Update()
         {
-            if (currentPlayer.Id != GameManager.PlayerId)
+            if (currentPlayer == null)
+            {
+                return;
+                
+            }
+
+            if (currentPlayer.Id != ConnectionManager.Instance.UserId)
             {
                 return;
             }

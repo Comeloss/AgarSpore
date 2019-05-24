@@ -27,7 +27,10 @@ namespace Models
             Position = position;
             Rotation = rotation;
 
-            PlayerUpdated?.Invoke();
+            if (PlayerUpdated == null)
+            {
+                PlayerUpdated.Invoke();
+            }
         }
     }
 }
