@@ -25,7 +25,7 @@ namespace Controllers
 
         private void MdlPlayerOnPlayerUpdated()
         {
-            transform.SetX(currentPlayer.Position.X).SetY(currentPlayer.Position.Y);
+            transform.SetX(currentPlayer.Position.x).SetY(currentPlayer.Position.y);
             transform.RotateZ(currentPlayer.Rotation);
         }
 

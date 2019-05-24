@@ -1,6 +1,7 @@
 ﻿using BestHTTP.WebSocket;
 using UnityEngine;
 using System;
+using Managers;
 
 namespace Assets.GlebScript
 {
@@ -117,8 +118,7 @@ namespace Assets.GlebScript
 
         private void OnServerUpdateMethod(UpdateResponseData data)
         {
-            //var updateData = JsonUtility.FromJson<UpdateResponseData>(data);
-
+            Game.Instance.PlayersManager.UpdateGame(data);
             Debug.Log("OnServerUpdateMethod: " + data.Players[0].PlayerId);
         }
 

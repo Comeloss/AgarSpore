@@ -2,7 +2,7 @@
 using Managers;
 using UnityEngine;
 
-public class Game : MonoBehaviour
+public class Game : Singleton<Game>
 {
     public PlayersSpawner PlayersSpawner;
     

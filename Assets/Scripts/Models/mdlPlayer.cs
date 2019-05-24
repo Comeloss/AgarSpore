@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Numerics;
+using UnityEngine;
 
 namespace Models
 {
-    public abstract class MdlPlayer
+    public class MdlPlayer
     {
         public event Action PlayerUpdated;
         public string Id { get; private set; }
@@ -13,7 +13,7 @@ namespace Models
         public int level { get; private set; } 
         public int xp { get; private set; }
 
-        protected MdlPlayer(string newId)
+        public MdlPlayer(string newId)
         {
             Id = newId;
             //configurate
