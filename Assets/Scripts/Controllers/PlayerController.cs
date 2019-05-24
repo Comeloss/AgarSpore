@@ -30,6 +30,17 @@ namespace Controllers
 
         private void MdlPlayerOnPlayerUpdated()
         {
+            if (currentPlayer == null)
+            {
+                return;
+                
+            }
+
+            if (currentPlayer.Id == ConnectionManager.Instance.UserId)
+            {
+                return;
+            }
+            
             transform.SetX(currentPlayer.Position.x).SetY(currentPlayer.Position.y);
             transform.RotateZ(currentPlayer.Rotation);
         }
