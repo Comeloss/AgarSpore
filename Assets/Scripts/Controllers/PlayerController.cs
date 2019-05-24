@@ -40,8 +40,9 @@ namespace Controllers
             {
                 return;
             }
+
+            transform.position = Vector2.Lerp(transform.position, currentPlayer.Position, Time.smoothDeltaTime);
             
-            transform.SetX(currentPlayer.Position.x).SetY(currentPlayer.Position.y);
             body.RotateZ(currentPlayer.Rotation);
 
             if (currentPlayer.isShooting)
