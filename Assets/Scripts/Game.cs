@@ -1,42 +1,23 @@
-﻿using UnityEngine;
+﻿using Generators;
+using Managers;
+using UnityEngine;
 
-public class Game : MonoBehaviour 
+public class Game : MonoBehaviour
 {
-/*    public WorldManager World;
-    public PlayersManager Players;
-    public GameHUD HUD;
-    public PopupManager PopupManager;
-    public InputSystem InputSystem;
+    public PlayersSpawner PlayersSpawner;
+    
+    public PlayersManager PlayersManager;
 
-    StatesManager stateM;
-    public StatesManager StatesManager
-    {
-        get
-        {
-            return stateM ?? (stateM = new StatesManager());
-        }
-    }
-
-    public AgentsManager AgentsManager;
-    public AreasManager AreasManager;
-    public FractionsManager FractionsManager;
-    public NewsManager NewsManager;
-    public PathManager PathManager;*/
-
+    public GameManager GameManager;
+    
+    
     void Awake()
     {
-        /*Players.Init();
-
-        PathManager = new PathManager();
-        FractionsManager = new FractionsManager(LoadFractions());
-        AgentsManager = new AgentsManager(LoadAgents(), this);
-        AreasManager = new AreasManager(this);
-        NewsManager = new NewsManager();
+        GameManager = new GameManager();
         
-        
-        World.Init();
-        HUD.Init();*/
+        PlayersManager = new PlayersManager();
 
+        PlayersSpawner.Init(PlayersManager);
     }
 }
 

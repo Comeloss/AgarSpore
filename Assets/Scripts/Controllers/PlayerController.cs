@@ -1,21 +1,41 @@
 ﻿using System.Collections;
+using Models;
 using UnityEngine;
 
 namespace Controllers
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : Game
     {
         [SerializeField] float speed = 1f;
 
         [SerializeField] private LazerController lazer;
-       
-        public void Init( )
-        {
         
+        [SerializeField] private TextMesh text;
+
+        [SerializeField] private Transform body;
+
+        private MdlPlayer currentPlayer { get; set; }
+
+        public void Init(MdlPlayer mdlPlayer)
+        {
+            text.text = mdlPlayer.Id;
+            
+            mdlPlayer.PlayerUpdated += MdlPlayerOnPlayerUpdated;
+        }
+
+        private void MdlPlayerOnPlayerUpdated()
+        {
+            transform.SetX(currentPlayer.Position.X).SetY(currentPlayer.Position.Y);
+            transform.RotateZ(currentPlayer.Rotation);
         }
 
         void Update()
         {
+            if (currentPlayer.Id != GameManager.PlayerId)
+            {
+                return;
+            }
+
             Look();
             
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
@@ -58,7 +78,7 @@ namespace Controllers
             diff.Normalize();
  
             float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+            body.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
         }
 
         void MoveLeftX(bool left)

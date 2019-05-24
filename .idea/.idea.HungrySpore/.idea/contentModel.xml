@@ -11,14 +11,20 @@
             <e p="ProjectileController.cs" t="Include" />
           </e>
           <e p="Game.cs" t="Include" />
+          <e p="Generators" t="Include">
+            <e p="PlayersSpawner.cs" t="Include" />
+          </e>
           <e p="Helpers" t="Include">
             <e p="TransformHelper.cs" t="Include" />
+          </e>
+          <e p="Managers" t="Include">
+            <e p="GameManager.cs" t="Include" />
+            <e p="PlayersManager.cs" t="Include" />
           </e>
           <e p="Models" t="Include">
             <e p="mdlPlayer.cs" t="Include" />
             <e p="mdlProjectile.cs" t="Include" />
           </e>
-          <e p="PlayersSpawner.cs" t="Include" />
           <e p="ProjectilePool.cs" t="Include" />
         </e>
       </e>
