@@ -30,4 +30,13 @@ public class UpdateRequestData
         get { return r; }
         set { r = value; }
     }
+
+    [SerializeField]
+    public string id;
+
+    public string Id
+    {
+        get { return id; }
+        set { id = value; }
+    }
 }

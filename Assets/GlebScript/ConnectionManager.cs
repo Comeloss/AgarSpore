@@ -156,9 +156,9 @@ namespace Assets.GlebScript
                     {
                         x = x,
                         y = y,
-                        r = r
+                        r = r,
+                        id = UserId
                     }
-
                 }
             };
 
