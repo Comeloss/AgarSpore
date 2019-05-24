@@ -42,7 +42,7 @@ namespace Controllers
             }
             
             transform.SetX(currentPlayer.Position.x).SetY(currentPlayer.Position.y);
-            transform.RotateZ(currentPlayer.Rotation);
+            body.RotateZ(currentPlayer.Rotation);
         }
 
         void Update()
@@ -78,7 +78,7 @@ namespace Controllers
                 MoveUpY(false);
             }
             
-            ConnectionManager.Instance.SendUpdate(transform.position.x, transform.position.y, body.rotation.eulerAngles.z);
+            ConnectionManager.Instance.SendUpdate(transform.position.x, transform.position.y, body.rotation.eulerAngles.z, lazer.isShooting);
 
             if (Input.GetMouseButton(0))
             {
