@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Controllers
 {
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] float speed = 1f;
-        
+
+        [SerializeField] private LazerController lazer;
+       
         public void Init( )
         {
         
@@ -38,14 +41,19 @@ namespace Controllers
                 Shoot();
             }
         }
-
+       
         void Shoot()
         {
-            Debug.Log("Fire");
+            lazer.Shoot();
         }
 
         void Look()
         {
+            if (lazer.isShooting)
+            {
+                return;
+            }
+
             Vector3 diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             diff.Normalize();
  

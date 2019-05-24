@@ -6,6 +6,7 @@
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
           <e p="Controllers" t="Include">
+            <e p="LazerController.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
             <e p="ProjectileController.cs" t="Include" />
           </e>
