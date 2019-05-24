@@ -43,6 +43,11 @@ namespace Controllers
             
             transform.SetX(currentPlayer.Position.x).SetY(currentPlayer.Position.y);
             body.RotateZ(currentPlayer.Rotation);
+
+            if (currentPlayer.isShooting)
+            {
+                Shoot();    
+            }
         }
 
         void Update()

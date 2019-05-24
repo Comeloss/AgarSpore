@@ -9,6 +9,8 @@ namespace Models
         public string Id { get; private set; }
         public Vector2 Position { get; private set; }
         public float Rotation { get; private set; }
+        
+        public bool isShooting { get; private set; }
         public int hp { get; private set; }
         public int level { get; private set; } 
         public int xp { get; private set; }
@@ -22,10 +24,11 @@ namespace Models
             hp = 5;
         }
 
-        public void UpdatePlayer(Vector2 position, float rotation)
+        public void UpdatePlayer(Vector2 position, float rotation, bool isS)
         {
             Position = position;
             Rotation = rotation;
+            isShooting = isS;
 
             if (PlayerUpdated != null)
             {

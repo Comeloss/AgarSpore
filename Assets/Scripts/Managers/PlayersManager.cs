@@ -20,7 +20,7 @@ namespace Managers
                 if (players.ContainsKey(mdlPlayer.id))
                 {
                     var pos = new Vector2(mdlPlayer.x, mdlPlayer.y);   
-                    players[mdlPlayer.id].UpdatePlayer(pos, mdlPlayer.r);
+                    players[mdlPlayer.id].UpdatePlayer(pos, mdlPlayer.r, mdlPlayer.s);
                     continue;
                 }
 
