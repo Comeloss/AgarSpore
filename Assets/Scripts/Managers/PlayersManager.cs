@@ -20,11 +20,11 @@ namespace Managers
                 if (players.ContainsKey(mdlPlayer.id))
                 {
                     var pos = new Vector2(mdlPlayer.x, mdlPlayer.y);   
-                    players[mdlPlayer.id].UpdatePlayer(pos, mdlPlayer.r, mdlPlayer.s);
+                    players[mdlPlayer.id].UpdatePlayer(pos, mdlPlayer.r, mdlPlayer.s, mdlPlayer.h);
                     continue;
                 }
 
-                var player = new MdlPlayer(mdlPlayer.id); 
+                var player = new MdlPlayer(mdlPlayer.id, mdlPlayer.h); 
 
                 players.Add(mdlPlayer.id, player);
                 NewPlayerSpawned?.Invoke(player);

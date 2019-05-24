@@ -15,17 +15,24 @@ namespace Controllers
 
         [SerializeField] private Transform body;
 
+        [SerializeField] private SpriteRenderer _healthBar;
+
+        [SerializeField] private ParticleSystem damageEffect;
+
         private MdlPlayer currentPlayer { get; set; }
+
+        private int fullHp;
 
         public void Init(MdlPlayer mdlPlayer)
         {
             currentPlayer = mdlPlayer;
             
             text.text = mdlPlayer.Id;
+
+            fullHp = currentPlayer.fullHp;
             
-            
-            
-            mdlPlayer.PlayerUpdated += MdlPlayerOnPlayerUpdated;
+            currentPlayer.PlayerUpdated += MdlPlayerOnPlayerUpdated;
+            currentPlayer.PlayerDamadged += Hit;
         }
 
         private void MdlPlayerOnPlayerUpdated()
@@ -33,7 +40,6 @@ namespace Controllers
             if (currentPlayer == null)
             {
                 return;
-                
             }
 
             if (currentPlayer.Id == ConnectionManager.Instance.UserId)
@@ -41,10 +47,10 @@ namespace Controllers
                 return;
             }
 
-            transform.position = Vector2.Lerp(transform.position, currentPlayer.Position, Time.smoothDeltaTime);
+            transform.position = currentPlayer.Position;
             
             body.RotateZ(currentPlayer.Rotation);
-
+                                    
             if (currentPlayer.isShooting)
             {
                 Shoot();    
@@ -97,6 +103,20 @@ namespace Controllers
             lazer.Shoot();
         }
 
+        void Hit()
+        {
+            if (currentPlayer.fullHp != 0)
+            {
+                var percent = (float)currentPlayer.currentHp / (float)currentPlayer.fullHp;
+                
+                _healthBar.size = new Vector2(percent * _healthBar.size.x, _healthBar.size.y);    
+                
+                _healthBar.color = Color.Lerp(Color.green, Color.red, percent);
+            }
+            
+            damageEffect.Play();
+        }
+
         void Look()
         {
             if (lazer.isShooting)
@@ -116,8 +136,6 @@ namespace Controllers
             var newPosX = transform.position.x + (left ? -speed : speed); 
             
             transform.SetX(newPosX);
-            
-            
         }
         
         void MoveUpY(bool up)
